@@ -81,11 +81,12 @@ model.eval()
 
 # set up tensors and permute
 input_moving = torch.from_numpy(moving).to(device).float().permute(0, 4, 1, 2, 3)
+input_mask = torch.from_numpy(mask).to(device).float().permute(0, 4, 1, 2, 3)
 input_fixed = torch.from_numpy(fixed).to(device).float().permute(0, 4, 1, 2, 3)
 
 # predict
 moved, warp = model(input_moving, input_fixed, registration=True)
-moved_mask = model.transformer(mask, warp)
+moved_mask = model.transformer(input_mask, warp)
 
 # save moved image
 if args.moved:
