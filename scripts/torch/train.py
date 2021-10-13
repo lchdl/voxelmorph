@@ -52,7 +52,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--img-list', required=True, help='line-seperated list of training files')
 parser.add_argument('--img-prefix', help='optional input image file prefix')
 parser.add_argument('--img-suffix', help='optional input image file suffix')
-parser.add_argument('--atlas', help='atlas filename (default: data/atlas_norm.npz)')
+#parser.add_argument('--atlas', help='atlas filename (default: data/atlas_norm.npz)')
 parser.add_argument('--model-dir', default='models',
                     help='model output directory (default: models)')
 parser.add_argument('--multichannel', action='store_true',
@@ -100,17 +100,17 @@ assert len(train_files) > 0, 'Could not find any training data.'
 # no need to append an extra feature axis if data is multichannel
 add_feat_axis = not args.multichannel
 
-if args.atlas:
-    # scan-to-atlas generator
-    atlas = vxm.py.utils.load_volfile(args.atlas, np_var='vol',
-                                      add_batch_axis=True, add_feat_axis=add_feat_axis)
-    generator = vxm.generators.scan_to_atlas(train_files, atlas,
-                                             batch_size=args.batch_size, bidir=args.bidir,
-                                             add_feat_axis=add_feat_axis)
-else:
-    # scan-to-scan generator
-    generator = vxm.generators.scan_to_scan(
-        train_files, batch_size=args.batch_size, bidir=args.bidir, add_feat_axis=add_feat_axis)
+# if args.atlas:
+#     # scan-to-atlas generator
+#     atlas = vxm.py.utils.load_volfile(args.atlas, np_var='vol',
+#                                       add_batch_axis=True, add_feat_axis=add_feat_axis)
+#     generator = vxm.generators.scan_to_atlas(train_files, atlas,
+#                                              batch_size=args.batch_size, bidir=args.bidir,
+#                                              add_feat_axis=add_feat_axis)
+
+# scan-to-scan generator
+generator = vxm.generators.scan_to_scan(
+    train_files, batch_size=args.batch_size, bidir=args.bidir, add_feat_axis=add_feat_axis)
 
 # extract shape from sampled input
 inshape = next(generator)[0][0].shape[1:-1]
