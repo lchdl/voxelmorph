@@ -34,3 +34,8 @@ else:
     from .tf import networks
     from .tf import losses
     from .tf import utils
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
+
